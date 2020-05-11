@@ -7,15 +7,16 @@ trigger:
 - master
 
 pool:
-  vmImage: 'ubuntu-latest'
+  name: 'Apigee'
+  demands: 'npm'
+
 
 steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '10.x'
-  displayName: 'Install Node.js'
+- checkout: none
 
 - script: |
+    cd /home/admin/pipelines-javascript-master
+    pwd
     npm install
     npm run build
   displayName: 'npm install and build'
