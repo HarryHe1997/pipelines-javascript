@@ -15,8 +15,9 @@ steps:
 - checkout: none
 
 - script: |
-    cd /home/admin/pipelines-javascript-master
+    cd /home/admin/TestSamples/pipelines-javascript-master
     pwd
+    ./hello.sh
     npm install
     npm run build
   displayName: 'npm install and build'
