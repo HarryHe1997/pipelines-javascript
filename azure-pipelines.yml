@@ -17,7 +17,5 @@ steps:
 - script: |
     cd /home/admin/TestSamples/pipelines-javascript-master
     pwd
-    ./hello.sh > hello_output.txt
-    npm install
-    npm run build
-  displayName: 'npm install and build'
+    ./run_ci_tests.sh > run_ci_tests_output.txt
+  displayName: 'run CI testing.'
