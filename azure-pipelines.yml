@@ -25,3 +25,9 @@ steps:
     pwd
     ./run_ci_tests_JS.sh > run_ci_tests_JS.log
   displayName: 'Run CI testing for JavaScript Code.'
+
+- script: |
+    cd /home/admin/TestSamples/pipelines-javascript-master
+    pwd
+    ./deploy_apigee_training.sh > deploy_apigee_training.log
+  displayName: 'Deploy Apigee config and proxy code to training environment.'
