@@ -23,6 +23,8 @@ steps:
 - script: |
     cd /home/admin/TestSamples/pipelines-javascript-master
     pwd
+    echo $(System.DefaultWorkingDirectory)
+    echo $(Agent.HomeDirectory)
     ./run_ci_tests_JS.sh > run_ci_tests_JS.log
   displayName: 'Run CI testing for JavaScript Code.'
 
