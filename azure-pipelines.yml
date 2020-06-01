@@ -20,9 +20,5 @@ steps:
     ./get_latest_code.sh > get_latest_code.log
   displayName: 'Get latest code.'
 
-- script: |
-    cd /home/admin/TestSamples/pipelines-javascript-master
-    pwd
-    ./run_ci_tests_JS.sh > run_ci_tests_JS.log
-  displayName: 'Run CI testing for JavaScript Code.'
+
 
