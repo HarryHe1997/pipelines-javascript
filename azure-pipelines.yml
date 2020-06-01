@@ -30,7 +30,7 @@ steps:
 - task: PublishTestResults@2
   inputs:
     testResultsFormat: 'xUnit' # Options: JUnit, NUnit, VSTest, xUnit
-    testResultsFiles: '*/TEST-*.xml' 
+    testResultsFiles: '**/TEST-*.xml' 
   condition: succeededOrFailed()
 
 
