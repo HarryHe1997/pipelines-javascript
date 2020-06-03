@@ -30,10 +30,10 @@ steps:
     ./run_ci_tests_JS.sh > run_ci_tests_JS.log
   displayName: 'Run CI testing for JavaScript Code.'
 
-# PUBLISH XUNIT RESULTS
+# PUBLISH JUNIT RESULTS
 - task: PublishTestResults@2
   inputs:
-    testResultsFormat: 'xUnit' # Options: JUnit, NUnit, VSTest, xUnit
+    testResultsFormat: 'JUnit' # Options: JUnit, NUnit, VSTest, xUnit
     testResultsFiles: '**/TEST-*.xml' 
   condition: succeededOrFailed()
 
