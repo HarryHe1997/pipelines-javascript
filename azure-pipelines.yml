@@ -6,46 +6,22 @@
 trigger:
 - master
 
-pool:
-  name: 'Apigee'
-  demands: 'npm'
-
-
-steps:
-- checkout: none
-
-- script: |
-    cd /home/admin/TestSamples/pipelines-javascript-master
-    pwd
-    ./get_latest_code.sh > get_latest_code.log
-  displayName: 'Get latest code.'
-
-- script: |
-    cd /home/admin/TestSamples/pipelines-javascript-master
-    pwd
-    echo '-------- System.DefaultWorkingDirectory ------------------'
-    echo $(System.DefaultWorkingDirectory)
-    echo '-------- Agent.HomeDirectory ------------------'
-    echo $(Agent.HomeDirectory)
-    ./run_ci_tests_JS.sh > run_ci_tests_JS.log
-  displayName: 'Run CI testing for JavaScript Code.'
-
-# PUBLISH JUNIT RESULTS
-- task: PublishTestResults@2
-  inputs:
-    testResultsFormat: 'JUnit' # Options: JUnit, NUnit, VSTest, xUnit
-    testResultsFiles: '**/TEST-*.xml' 
-  condition: succeededOrFailed()
-
-# Publish code coverage results
-# Publish Cobertura or JaCoCo code coverage results from a build
-- task: PublishCodeCoverageResults@1
-  inputs:
-    codeCoverageTool: 'Cobertura' # Options: cobertura, jaCoCo
-    summaryFileLocation: $(System.DefaultWorkingDirectory)/coverage/cobertura-coverage.xml
-    #pathToSources: # Optional
-    #reportDirectory: # Optional
-    #additionalCodeCoverageFiles: # Optional
-    #failIfCoverageEmpty: false # Optional
-
-
+stages:
+- stage: Build
+  jobs:
+  - job: BuildJob
+    steps:
+    - script: echo Building!
+- stage: Test
+  jobs:
+  - job: TestOnWindows
+    steps:
+    - script: echo Testing on Windows!
+  - job: TestOnLinux
+    steps:
+    - script: echo Testing on Linux!
+- stage: Deploy
+  jobs:
+  - job: Deploy
+    steps:
+    - script: echo Deploying the code!
