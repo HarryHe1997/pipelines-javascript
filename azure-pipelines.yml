@@ -7,13 +7,16 @@ trigger:
 - master
 
 stages:
-- stage: Build
+- stage: Dev
   jobs:
   - job: BuildJob
     steps:
     - script: echo Building!
 - stage: Test
   jobs:
+  - deployment: DeployTest
+    displayName: deploy to Test environment
+    environment: 'Test'
   - job: TestOnWindows
     steps:
     - script: echo Testing on Windows!
