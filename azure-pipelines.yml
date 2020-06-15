@@ -8,7 +8,7 @@ trigger:
 
 variables:
   run_dev: true
-  run_test: false
+  run_test: true
 
 
 stages:
