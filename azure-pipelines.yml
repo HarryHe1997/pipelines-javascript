@@ -5,6 +5,7 @@
 
 variables:
   run_test: true
+  deploy_test: false
 
 trigger:
 - master
@@ -58,6 +59,7 @@ stages:
   condition: and(succeeded(), eq(variables['run_test'], 'true'))
   jobs:
   - deployment: DeployTest
+    condition: and(succeeded(), eq(variables['deploy_test'], 'true'))
     displayName: deploy to Test environment
     environment: 'Test'
     strategy:
