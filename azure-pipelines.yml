@@ -3,34 +3,78 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
+variables:
+  run_test: false
+
 trigger:
 - master
 
-variables:
-  run_dev: true
-  run_test: true
-
+pool:
+  name: 'Apigee'
+  demands: 'npm'
 
 stages:
 - stage: Dev
   jobs:
-  - job: BuildJob
+  - job: GetLatestCode
     steps:
-    - script: echo Building!
+    - checkout: none
+    - script: |
+        cd /home/admin/TestSamples/pipelines-javascript-master
+        pwd
+        ./get_latest_code.sh > get_latest_code.log
+      displayName: 'Get latest code.'        
+  - job: RunCiTestJs
+    steps:
+    - script: |
+        cd /home/admin/TestSamples/pipelines-javascript-master
+        pwd
+        echo '-------- System.DefaultWorkingDirectory ------------------'
+        echo $(System.DefaultWorkingDirectory)
+        echo '-------- Agent.HomeDirectory ------------------'
+        echo $(Agent.HomeDirectory)
+        ./run_ci_tests_JS.sh > run_ci_tests_JS.log
+      displayName: 'Run CI testing for JavaScript Code.'        
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: 'JUnit' # Options: JUnit, NUnit, VSTest, xUnit
+        testResultsFiles: '**/TEST-*.xml' 
+      condition: succeededOrFailed()
+      displayName: 'Publish JUnit results.' 
+    - task: PublishCodeCoverageResults@1
+      inputs:
+        codeCoverageTool: 'Cobertura' # Options: cobertura, jaCoCo
+        summaryFileLocation: $(System.DefaultWorkingDirectory)/coverage/cobertura-coverage.xml
+        #pathToSources: # Optional
+        #reportDirectory: # Optional
+        #additionalCodeCoverageFiles: # Optional
+        #failIfCoverageEmpty: false # Optional
+      condition: succeededOrFailed()
+      displayName: 'Publish code coverage results.' 
+
+
 - stage: Test
   condition: and(succeeded(), eq(variables['run_test'], 'true'))
   jobs:
   - deployment: DeployTest
     displayName: deploy to Test environment
     environment: 'Test'
-  - job: TestOnWindows
+  - job: CreateNewRelease    
     steps:
-    - script: echo Testing on Windows!
-  - job: TestOnLinux
-    steps:
-    - script: echo Testing on Linux!
-- stage: Deploy
-  jobs:
-  - job: Deploy
-    steps:
-    - script: echo Deploying the code!
+    - script: |
+        cd /home/admin/TestSamples/pipelines-javascript-master
+        pwd
+        echo '-------- Create a new release. ------------------'
+
+
+
+
+
+
+
+
+    
+    
+    
+  
+
