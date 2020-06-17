@@ -60,6 +60,11 @@ stages:
   - deployment: DeployTest
     displayName: deploy to Test environment
     environment: 'Test'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - script: echo my first deployment
   - job: CreateNewRelease    
     steps:
     - checkout: none
