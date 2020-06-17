@@ -26,6 +26,7 @@ stages:
       displayName: 'Get latest code.'        
   - job: RunCiTestJs
     steps:
+    - checkout: none
     - script: |
         cd /home/admin/TestSamples/pipelines-javascript-master
         pwd
@@ -61,6 +62,7 @@ stages:
     environment: 'Test'
   - job: CreateNewRelease    
     steps:
+    - checkout: none
     - script: |
         cd /home/admin/TestSamples/pipelines-javascript-master
         pwd
