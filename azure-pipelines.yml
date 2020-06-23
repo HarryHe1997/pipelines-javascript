@@ -26,7 +26,8 @@ stages:
         ./get_latest_code.sh > get_latest_code.log
       displayName: 'Get latest code.'        
   - job: RunCiTestJs
-    condition: succeeded('GetLatestCode')
+    dependsOn: GetLatestCode
+    condition: succeeded()
     steps:
     - checkout: none
     - script: |
@@ -55,7 +56,8 @@ stages:
       condition: succeededOrFailed()
       displayName: 'Publish code coverage results.' 
   - job: DeployTraining
-    condition: succeeded('RunCiTestJs')
+    dependsOn: RunCiTestJs
+    condition: succeeded()
     steps:
     - checkout: none
     - script: |
