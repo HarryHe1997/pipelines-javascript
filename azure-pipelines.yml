@@ -54,6 +54,15 @@ stages:
       condition: succeededOrFailed()
       displayName: 'Publish code coverage results.' 
 
+  - job: DeployToTraining
+    steps:
+    - checkout: none
+    - script: |
+        cd /home/admin/TestSamples/pipelines-javascript-master
+        pwd
+        ./deploy_apigee_training.sh > deploy_apigee_training.log
+      displayName: 'Deploy Apigee config and proxy code to training environment.'        
+
 
 - stage: Test
   condition: and(succeeded(), eq(variables['run_test'], 'true'))
