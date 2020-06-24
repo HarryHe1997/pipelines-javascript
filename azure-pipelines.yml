@@ -22,9 +22,8 @@ stages:
     - checkout: none
     - script: |
         cd /home/admin/TestSamples/pipelines-javascript-master
-        pwd
         ./get_latest_code.sh > get_latest_code.log
-      displayName: 'Get latest code.'        
+      displayName: 'Get latest code from TFS.'        
   - job: RunCiTestJs
     dependsOn: GetLatestCode
     condition: succeeded()
@@ -32,7 +31,6 @@ stages:
     - checkout: none
     - script: |
         cd /home/admin/TestSamples/pipelines-javascript-master
-        pwd
         echo '-------- System.DefaultWorkingDirectory ------------------'
         echo $(System.DefaultWorkingDirectory)
         echo '-------- Agent.HomeDirectory ------------------'
@@ -62,7 +60,6 @@ stages:
     - checkout: none
     - script: |
         cd /home/admin/TestSamples/pipelines-javascript-master
-        pwd
         ./deploy_apigee_training.sh > deploy_apigee_training.log
       displayName: 'Deploy Apigee config and proxy code to training environment.'        
 
@@ -84,9 +81,36 @@ stages:
     - checkout: none
     - script: |
         cd /home/admin/TestSamples/pipelines-javascript-master
-        pwd
         echo '-------- Create a new release. ------------------'
         ./create_new_release_label.sh > create_new_release_label.log
+      displayName: 'Create a new release label in TFS.'
+  - job: GetCodePerReleaseLabel
+    dependsOn: CreateNewRelease
+    condition: succeeded()
+    steps:
+    - checkout: none
+    - script: |
+        cd /home/admin/TestSamples/pipelines-javascript-master
+        ./get_code_per_release_label.sh > get_code_per_release_label.log
+      displayName: 'Get code per release label from TFS.'        
+  - job: DeployToTest
+    dependsOn: GetCodePerReleaseLabel
+    condition: succeeded()
+    steps:
+    - checkout: none
+    - script: |
+        cd /home/admin/TestSamples/pipelines-javascript-master
+        ./deploy_apigee_test.sh > deploy_apigee_test.log
+      displayName: 'Deploy Apigee config and proxy code to test environment.'        
+  - job: RunKreTest
+    dependsOn: DeployToTest
+    condition: succeeded()
+    steps:
+    - checkout: none
+    - script: |
+        echo '-------- Starting running KRE tests... ------------------'
+      displayName: 'Run KRE testing.'        
+
 
 
 
