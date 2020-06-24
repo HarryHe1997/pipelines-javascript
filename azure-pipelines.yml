@@ -4,7 +4,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 variables:
-  run_test: true
+  run_test: false
   deploy_test: false
 
 trigger:
