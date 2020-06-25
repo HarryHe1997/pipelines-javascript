@@ -102,14 +102,6 @@ stages:
         cd /home/admin/TestSamples/pipelines-javascript-master
         ./deploy_apigee_test.sh > deploy_apigee_test.log
       displayName: 'Deploy Apigee config and proxy code to test environment.'        
-  - job: RunKreTest
-    dependsOn: DeployToTest
-    condition: succeeded()
-    steps:
-    - checkout: none
-    - script: |
-        echo '-------- Starting running KRE tests... ------------------'
-      displayName: 'Run KRE testing.'        
 
 
 
