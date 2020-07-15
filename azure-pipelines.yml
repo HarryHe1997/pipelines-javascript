@@ -25,3 +25,10 @@ stages:
         echo $(Agent.HomeDirectory)
         ./run_iqq-los-v14-api-validation.sh > run_iqq-los-v14-api-validation.log
       displayName: 'Run iqq-los-v14-api-validation.'        
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: 'JUnit' # Options: JUnit, NUnit, VSTest, xUnit
+        testResultsFiles: '**/TEST-*.xml' 
+      condition: succeededOrFailed()
+      displayName: 'Publish JUnit results.' 
+
