@@ -14,7 +14,7 @@ pool:
 stages:
 - stage: Katalon
   jobs:
-  - job: Run_iqq_los_v14_api_validation
+  - job: Run_test_suite_collections
     steps:
     - checkout: none
     - script: |
@@ -23,8 +23,8 @@ stages:
         echo $(System.DefaultWorkingDirectory)
         echo '-------- Agent.HomeDirectory ------------------'
         echo $(Agent.HomeDirectory)
-        ./run_iqq-los-v14-api-validation.sh > run_iqq-los-v14-api-validation.log
-      displayName: 'Run iqq-los-v14-api-validation.'        
+        ./run_test_suite_collections.sh > run_test_suite_collections.log
+      displayName: 'Run test suite collections.'        
     - task: PublishTestResults@2
       inputs:
         testResultsFormat: 'JUnit' # Options: JUnit, NUnit, VSTest, xUnit
